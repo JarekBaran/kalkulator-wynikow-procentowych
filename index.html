@@ -13,11 +13,13 @@
     </header>
     <section id="percentage-calculator">
       <input type="number" min="0" v-model.number="points" placeholder="Punkty" />
-      <div class="variants">
-        <input type="radio" id="variant" v-model="variant" />
-        <label for="variant">variant</label>
-      </div>
       <div class="percentage-results">
+        <div class="percentage-variants">
+          <div class="percentage-variant">
+            <input type="radio" id="variant" v-model="variant" />
+            <label for="variant">variant</label>
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
@@ -57,7 +59,7 @@
         },
         methods: {
           getPercentPoints(percent) {
-            return Math.ceil((parseInt(percent) * parseInt(this.points)) / 100);
+            return Math.round((parseInt(percent) * parseInt(this.points)) / 100);
           },
         }
       };
@@ -81,10 +83,43 @@
         flex-direction: column;
       }
 
-      table{
-        width: 600px;
+      input[type=number] {
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+
+      .percentage-results {
+        display: flex;
+      }
+
+      .percentage-variants {
+        min-width: 200px;
+        margin-right: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+
+      input[type=radio] {
+        margin: 10px;
+      }
+
+      table {
+        min-width: 600px;
         text-align: center;
-        border: 1px solid #000;
+        border-spacing: 10px;
+        border: 1px solid #ccc;
+      }
+
+      thead {
+        color: #fff;
+        background-color: #a00;
+      }
+
+      td, th {
+        border: 1px solid #ccc;
+        padding: 10px;
       }
     </style>
   </body>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator wyników procentowych</title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center">Kalkulator wyników procentowych</h1>
+    </header>
+    <section id="percentage-calculator">
+      <input type="number" min="0" v-model.number="points" placeholder="Punkty" />
+      <div class="variants">
+        <input type="radio" id="variant" v-model="variant" />
+        <label for="variant">variant</label>
+      </div>
+      <div class="percentage-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Ocena</th>
+              <th>Przedział punktów</th>
+              <th>Przedział procentowy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(percent, index) in variants[0].rangeMax" :key="index">
+              <th>{{ grades[index] }}</th>
+              <td>{{ getPercentPoints(variants[0].rangeMax[index-1]+1 || 0) }} - {{ getPercentPoints(percent) }}</td>
+              <td>{{ variants[0].rangeMax[index-1]+1 || 0 }} - {{ percent }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <script>
+      const percentCalc = {
+        el: '#percentage-calculator',
+        data() {
+          return {
+            points: 100,
+            grades: [
+              `niedostateczny (1)`,
+              `dopuszczający (2)`,
+              `dostateczny (3)`,
+              `dobry (4)`,
+              `bardzo dobry (5)`,
+            ],
+            variants: [
+              { name: `test`, rangeMax: [20, 40, 60, 80, 100] },
+              { name: `spr-kart`, rangeMax: [35, 46, 65, 81, 100] },
+            ]
+          }
+        },
+        methods: {
+          getPercentPoints(percent) {
+            return Math.ceil((parseInt(percent) * parseInt(this.points)) / 100);
+          },
+        }
+      };
+
+      Vue.createApp(percentCalc).mount('#percentage-calculator');
+    </script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      table{
+        width: 600px;
+        text-align: center;
+        border: 1px solid #000;
+      }
+    </style>
+  </body>
+</html>

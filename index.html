@@ -15,9 +15,9 @@
       <input type="number" min="0" v-model.number="points" placeholder="Punkty" />
       <div class="percentage-results">
         <div class="percentage-variants">
-          <div class="percentage-variant">
-            <input type="radio" id="variant" v-model="variant" />
-            <label for="variant">variant</label>
+          <div v-for="(variant, index) in variants" class="percentage-variant">
+            <input type="radio" id="variant.name" :value="index" v-model="currentVariant" />
+            <label for="variant.name">{{ variant.name }}</label>
           </div>
         </div>
         <table>
@@ -29,10 +29,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(percent, index) in variants[0].rangeMax" :key="index">
+            <tr v-for="(percent, index) in variants[currentVariant].rangeMax" :key="index">
               <th>{{ grades[index] }}</th>
-              <td>{{ getPercentPoints(variants[0].rangeMax[index-1]+1 || 0) }} - {{ getPercentPoints(percent) }}</td>
-              <td>{{ variants[0].rangeMax[index-1]+1 || 0 }} - {{ percent }}</td>
+              <td>{{ getPercentPoints(variants[currentVariant].rangeMax[index-1]+1 || 0) }} - {{ getPercentPoints(percent) }}</td>
+              <td>{{ variants[currentVariant].rangeMax[index-1]+1 || 0 }} - {{ percent }}</td>
             </tr>
           </tbody>
         </table>
@@ -52,9 +52,10 @@
               `bardzo dobry (5)`,
             ],
             variants: [
-              { name: `test`, rangeMax: [20, 40, 60, 80, 100] },
-              { name: `spr-kart`, rangeMax: [35, 46, 65, 81, 100] },
-            ]
+              { name: `Test`, rangeMax: [20, 40, 60, 80, 100] },
+              { name: `Spr - kart`, rangeMax: [35, 46, 65, 81, 100] },
+            ],
+            currentVariant: 0,
           }
         },
         methods: {

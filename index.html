@@ -12,12 +12,12 @@
       <h1 class="text-center">Kalkulator wyników procentowych</h1>
     </header>
     <section id="percentage-calculator">
-      <input type="number" min="0" v-model.number="points" placeholder="Punkty" />
+      <input type="number" min="0" v-model.number="points" placeholder="Punkty" autofocus />
       <div class="percentage-results">
         <div class="percentage-variants">
           <div v-for="(variant, index) in variants" class="percentage-variant">
             <input type="radio" id="variant.name" :value="index" v-model="currentVariant" />
-            <label for="variant.name">{{ variant.name }}</label>
+            <label :for="variant.name">{{ variant.name }}</label>
           </div>
         </div>
         <table>

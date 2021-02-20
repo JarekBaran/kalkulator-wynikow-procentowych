@@ -5,6 +5,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator wyników procentowych</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
     <script src="https://unpkg.com/vue@next"></script>
   </head>
   <body>
@@ -15,10 +16,12 @@
       <div class="percentage-variants">
         <div class="percentage-points">
           <label for="points">Punkty:</label>
-          <input type="number" min="0" id="points" v-model.number="points" placeholder="Punkty" autofocus />
+          <input type="number" min="0" id="points" v-model.number="points" autofocus />
         </div>
         <div v-for="(variant, index) in variants" class="percentage-variant">
-          <input type="radio" id="variant.name" :value="index" v-model="currentVariant" />
+          <button @click="removeVariant(index)"><i class="icon-trash"></i></button>
+          <button @click="editVariant(index)"><i class="icon-note"></i></button>
+          <input type="radio" :id="variant.name" :value="index" v-model="currentVariant" />
           <label :for="variant.name">{{ variant.name }}</label>
         </div>
       </div>
@@ -38,6 +41,17 @@
           </tr>
         </tbody>
       </table>
+      <div class="new-variant">
+        <div class="save-variant">
+          <input type="text" id="name" v-model="newVariant.name" placeholder="Nazwa nowego wariantu">
+          <button @click="addVariant"><i class="icon-like"></i></button>
+        </div>
+        <input type="number" min="0" max="100" id="grade-1" v-model.number="newVariant.rangeMax[0]" />
+        <input type="number" min="0" max="100" id="grade-2" v-model.number="newVariant.rangeMax[1]" />
+        <input type="number" min="0" max="100" id="grade-3" v-model.number="newVariant.rangeMax[2]" />
+        <input type="number" min="0" max="100" id="grade-4" v-model.number="newVariant.rangeMax[3]" />
+        <input type="number" min="0" max="100" id="grade-5" v-model.number="newVariant.rangeMax[4]" />
+      </div>
     </section>
     <script>
       const percentCalc = {
@@ -58,11 +72,23 @@
               { name: `Test (ocena co 20%)`, rangeMax: [20, 40, 60, 80, 100] },
             ],
             currentVariant: 0,
+            newVariant: {name: ``, rangeMax: []},
           }
         },
         methods: {
           getPercentPoints(percent) {
             return Math.round((parseInt(percent) * parseInt(this.points)) / 100);
+          },
+          addVariant() {
+            const index = this.variants.findIndex(variant => variant.name == this.newVariant.name);
+            ~index ? this.variants[index] = this.newVariant : this.variants.push(this.newVariant);
+            this.newVariant =  {name: ``, rangeMax: []};
+          },
+          editVariant(index) {
+            this.newVariant = this.variants[index];
+          },
+          removeVariant(index) {
+            this.variants.splice(index, 1);
           },
         }
       };
@@ -95,28 +121,39 @@
       }
 
       .percentage-variants {
-        margin-right: 10px;
         border: 1px solid #ccc;
       }
 
       .percentage-points {
-        margin: 2px 0 2px 12px;
+        margin: 16px 9px 12px;
       }
 
       .percentage-variant {
-        padding: 1px;
+        padding: 6px 4px;
+      }
+
+      input[type=number] {
+        height: 38px;
       }
 
       input {
-        margin: 10px;
-        padding: 10px;
+        padding: 12px;
+        margin: 0px 9px;
+        text-align: right;
+        border-radius: 3px;
         border: 1px solid #ccc;
       }
 
+      button {
+        padding: 3px;
+        margin-left: 6px;
+      }
+
       table {
+        margin: 0 10px;
         min-width: 600px;
         text-align: center;
-        border-spacing: 10px;
+        border-spacing: 16px;
         border: 1px solid #ccc;
       }
 
@@ -126,9 +163,19 @@
       }
 
       td, th {
-        border: 1px solid #ccc;
         padding: 10px;
+        border: 1px solid #ccc;
       }
+
+      .new-variant {
+        display: grid;
+        border: 1px solid #ccc;
+      }
+
+      .save-variant {
+          margin: 16px 14px 0px 0px;
+      }
+
     </style>
   </body>
 </html>

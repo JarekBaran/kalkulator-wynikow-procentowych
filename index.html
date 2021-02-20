@@ -75,20 +75,29 @@
             newVariant: {name: ``, rangeMax: []},
           }
         },
+        mounted() {
+          localStorage.getItem('percentage-calculator_config') && (this.variants = JSON.parse(localStorage.getItem('percentage-calculator_config')));
+        },
         methods: {
           getPercentPoints(percent) {
             return Math.round((parseInt(percent) * parseInt(this.points)) / 100);
           },
           addVariant() {
-            const index = this.variants.findIndex(variant => variant.name == this.newVariant.name);
-            ~index ? this.variants[index] = this.newVariant : this.variants.push(this.newVariant);
-            this.newVariant =  {name: ``, rangeMax: []};
+
+            const exists = this.variants.findIndex(variant => variant.name == this.newVariant.name);
+
+            ~exists ? this.variants[exists] = this.newVariant : (this.newVariant.name && this.variants.push(this.newVariant));
+
+            (this.newVariant = {name: ``, rangeMax: []}) && this.updateConfig();
           },
           editVariant(index) {
-            this.newVariant = this.variants[index];
+            this.newVariant = {...this.variants[index]};
           },
           removeVariant(index) {
-            this.variants.splice(index, 1);
+            (this.variants.splice(index, 1)) && this.updateConfig();
+          },
+          updateConfig() {
+            localStorage.setItem('percentage-calculator_config', JSON.stringify(this.variants));
           },
         }
       };

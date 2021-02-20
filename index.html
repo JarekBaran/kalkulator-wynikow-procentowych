@@ -9,34 +9,35 @@
   </head>
   <body>
     <header>
-      <h1 class="text-center">Kalkulator wyników procentowych</h1>
+      <h1>Kalkulator wyników procentowych</h1>
     </header>
     <section id="percentage-calculator">
-      <input type="number" min="0" v-model.number="points" placeholder="Punkty" autofocus />
-      <div class="percentage-results">
-        <div class="percentage-variants">
-          <div v-for="(variant, index) in variants" class="percentage-variant">
-            <input type="radio" id="variant.name" :value="index" v-model="currentVariant" />
-            <label :for="variant.name">{{ variant.name }}</label>
-          </div>
+      <div class="percentage-variants">
+        <div class="percentage-points">
+          <label for="points">Punkty:</label>
+          <input type="number" min="0" id="points" v-model.number="points" placeholder="Punkty" autofocus />
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Ocena</th>
-              <th>Przedział punktów</th>
-              <th>Przedział procentowy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(percent, index) in variants[currentVariant].rangeMax" :key="index">
-              <th>{{ grades[index] }}</th>
-              <td>{{ getPercentPoints(variants[currentVariant].rangeMax[index-1]+1 || 0) }} - {{ getPercentPoints(percent) }} pkt </td>
-              <td>{{ variants[currentVariant].rangeMax[index-1]+1 || 0 }} - {{ percent }}% </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-for="(variant, index) in variants" class="percentage-variant">
+          <input type="radio" id="variant.name" :value="index" v-model="currentVariant" />
+          <label :for="variant.name">{{ variant.name }}</label>
+        </div>
       </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Ocena</th>
+            <th>Przedział punktów</th>
+            <th>Przedział procentowy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(percent, index) in variants[currentVariant].rangeMax" :key="index">
+            <th>{{ grades[index] }}</th>
+            <td>{{ getPercentPoints(variants[currentVariant].rangeMax[index-1]+1 || 0) }} - {{ getPercentPoints(percent) }} pkt </td>
+            <td>{{ variants[currentVariant].rangeMax[index-1]+1 || 0 }} - {{ percent }}% </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
     <script>
       const percentCalc = {
@@ -54,7 +55,7 @@
             variants: [
               { name: `Sprawdzian - kartkówka`, rangeMax: [35, 46, 65, 81, 100] },
               { name: `Test (zalicza 50%)`, rangeMax: [49, 62, 75, 88, 100] },
-              { name: `Test (stały co 20%)`, rangeMax: [20, 40, 60, 80, 100] },
+              { name: `Test (ocena co 20%)`, rangeMax: [20, 40, 60, 80, 100] },
             ],
             currentVariant: 0,
           }
@@ -85,26 +86,31 @@
         flex-direction: column;
       }
 
-      input[type=number] {
-        width: 100%;
-        margin: 10px 0;
-        padding: 10px;
-        border: 1px solid #ccc;
+      header {
+        margin: 16px;
       }
 
-      .percentage-results {
+      #percentage-calculator {
         display: flex;
       }
 
       .percentage-variants {
-        min-width: 200px;
         margin-right: 10px;
-        padding: 20px;
         border: 1px solid #ccc;
       }
 
-      input[type=radio] {
+      .percentage-points {
+        margin: 2px 0 2px 12px;
+      }
+
+      .percentage-variant {
+        padding: 1px;
+      }
+
+      input {
         margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
       }
 
       table {

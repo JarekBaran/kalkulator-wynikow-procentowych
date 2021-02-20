@@ -46,11 +46,7 @@
           <input type="text" id="name" v-model="newVariant.name" placeholder="Nazwa nowego wariantu">
           <button @click="addVariant"><i class="icon-like"></i></button>
         </div>
-        <input type="number" min="0" max="100" id="grade-1" v-model.number="newVariant.rangeMax[0]" />
-        <input type="number" min="0" max="100" id="grade-2" v-model.number="newVariant.rangeMax[1]" />
-        <input type="number" min="0" max="100" id="grade-3" v-model.number="newVariant.rangeMax[2]" />
-        <input type="number" min="0" max="100" id="grade-4" v-model.number="newVariant.rangeMax[3]" />
-        <input type="number" min="0" max="100" id="grade-5" v-model.number="newVariant.rangeMax[4]" />
+        <input type="number" min="0" max="100" v-for="(grade, index) in grades" :key="index" v-model.number="newVariant.rangeMax[index]" :placeholder="'podaj maksimum % dla ' + (index+1) " />
       </div>
     </section>
     <script>
@@ -148,7 +144,7 @@
       input {
         padding: 12px;
         margin: 0px 9px;
-        text-align: right;
+        text-align: center;
         border-radius: 3px;
         border: 1px solid #ccc;
       }
